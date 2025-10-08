@@ -1,7 +1,20 @@
+provider "vault" {
+  address = "http://127.0.0.1:8200"
+  token   = "hvs.gW75CPVIU3wZ8iyisraHNSKr"
+}
+
+data "vault_generic_secret" "admin" {
+  path = "secret/admin"
+}
+
+
+
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
 }
+
+
 
 module "network" {
   source              = "./modules/network"
@@ -44,10 +57,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
   location             = var.location
   resource_group_name  = var.resource_group_name
   size                 = var.vm_size
-  admin_username       = var.admin_username
+  admin_username       = data.vault_generic_secret.admin.data["username"]
 
   admin_ssh_key {
-    username   = var.admin_username
+    username   = data.vault_generic_secret.admin.data["username"]
     public_key = file(var.admin_ssh_key)
   }
 

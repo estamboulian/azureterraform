@@ -11,16 +11,10 @@ variable "vm_count" {
 }
 
 variable "vm_size" {
-  default = "Standard_B1s"
+  default = "Standard_B2s"
 }
 
-variable "admin_username" {
-  default = "azureuser"
-}
 
-variable "admin_password" {
-  default = "Azerty123!"
-}
 
 
 variable "admin_ssh_key" {
